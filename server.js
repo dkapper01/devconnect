@@ -1,5 +1,3 @@
-// import { request } from 'https';
-
 const express = require('express'); 
 const mongoose = require('mongoose'); 
 

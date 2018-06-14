@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
+const mongoose = require("mongoose");
 
 // Load User model
 const User = require("../../models/User");
@@ -18,28 +19,67 @@ router.post("/test", (req, res) =>
 // @routes GET api/users/register
 // @desc Register users
 // @access Public
+
 router.post("/register", (req, res) => {
-  User.findOne({ email: req.body.email }).then(user => {
-    if (user) {
-      return res.status(400);
-    }
-  });
+  User.findOne({ email: req.body.email })
+    .then(user => {
+      if (user) {
+        errors.email = "Email already exists";
+        console.log("Email already exists");
+        return res.status(400).json(errors);
+      } else {
+        const avatar = gravatar.url(req.body.email, {
+          s: "200", // Size
+          r: "pg", // Rating
+          d: "mm" // Default
+        });
 
-  const avatar = gravatar.url(req.body.email, {
-    s: "200",
-    r: "pg",
-    d: "d"
-  });
-  const newUser = new User({
-    name: req.body.name,
-    email: req.body.email,
-    avatar,
-    password: req.body.password
-  });
+        const newUser = new User({
+          name: req.body.name,
+          email: req.body.email,
+          avatar,
+          password: req.body.password
+        });
 
-  newUser.save();
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) throw err;
+            newUser.password = hash;
+            newUser
+              .save()
+              .then(user => res.json(user))
+              .catch(err => console.log(err));
+          });
+        });
+      }
+    })
+    .catch(err => console.log(err + "Something is wrong"));
+});
 
-  res.json(newUser);
+// @routes GET api/users/login
+// @desc Login User / Returning JWT Token
+// @access Public
+
+router.post('/login', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  // Find by email
+  User.findOne({email}).then(user => {
+    // Check for User
+    if(!user) {
+      return res.status(400).json({ email: "User not found"}); 
+    } 
+
+    // Check password 
+    bcrypt.compare(password, user.password).then(isMatch => {
+      if(isMatch) {
+        res.json({ msg: "Email found" })
+      } else {
+        return res.status(400).json({ password: "Password not found" }); 
+      }
+    }) 
+  })
 });
 
 module.exports = router;

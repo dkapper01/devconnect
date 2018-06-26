@@ -3,24 +3,30 @@ import React, { Component } from "react";
 class Register extends Component {
   constructor() {
     super();
-
     this.state = {
-      name: "",
-      email: "",
-      password: "",
-      password2: "",
+      name: '',
+      email: '',
+      password: '',
+      password2: '',
       errors: {}
     };
     this.onChange = this.onChange.bind(this);
-    // this.onSubmit = this.onSubmit.bind(this); 
+    this.onSubmit = this.onSubmit.bind(this);
   }
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
 
   onSubmit(e) {
-    e.preventDefault(); 
-    console.log(); 
+    e.preventDefault();
+
+    const newUser = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+      password2: this.state.password2
+    };
+    console.log(newUser);
   }
   render() {
     return (

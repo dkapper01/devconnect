@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/Cellar/yarn/1.6.0/libexec/bin/yarn.js run dev
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.6.0/libexec/bin/yarn.js server
 
 PATH: 
   Applications/mongodb/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Postgres.app/Contents/Versions/latest/bin:Applications/mongodb/bin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  SyntaxError: /Users/daniel/Desktop/devconnecter/package.json: Unexpected token / in JSON at position 286
+  SyntaxError: /Users/daniel/Desktop/devconnecter/package.json: Unexpected token / in JSON at position 126
       at JSON.parse (<anonymous>)
       at /usr/local/Cellar/yarn/1.6.0/libexec/lib/cli.js:1130:59
       at Generator.next (<anonymous>)
@@ -29,18 +29,19 @@ npm manifest:
     "description": "socal network",
     "main": "server.js",
     "scripts": {
-      "client-install": "yarn add --prefix client",
-      "start": "node server.js",
+      // "client-install": "cd client && yarn add",
+      // "start": "node server.js",
       "server": "nodemon server.js",
-      "client": "yarn start --prefix client",
-      // "dev": "concurrently \"yarn run server\" \"yarn run client\"",
-      "dev": "concurrently \"yarn run server\" \"yarn run client\""
+      // "client": "cd client && yarn start",
+      // "dev": "concurrently \"yarn run server\" \"yarn run client\""
     },
     "author": "Daniel Kapper",
     "license": "MIT",
     "dependencies": {
+      "axios": "^0.18.0",
       "bcryptjs": "^2.4.3",
       "body-parser": "^1.18.3",
+      "classnames": "^2.2.6",
       "concurrently": "^3.6.0",
       "express": "^4.16.3",
       "gravatar": "^1.6.0",
@@ -149,6 +150,13 @@ Lockfile:
   atob@^2.1.1:
     version "2.1.1"
     resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.1.tgz#ae2d5a729477f289d60dd7f96a6314a22dd6c22a"
+  
+  axios@^0.18.0:
+    version "0.18.0"
+    resolved "https://registry.yarnpkg.com/axios/-/axios-0.18.0.tgz#32d53e4851efdc0a11993b6cd000789d70c05102"
+    dependencies:
+      follow-redirects "^1.3.0"
+      is-buffer "^1.1.5"
   
   balanced-match@^1.0.0:
     version "1.0.0"
@@ -330,6 +338,10 @@ Lockfile:
       define-property "^0.2.5"
       isobject "^3.0.0"
       static-extend "^0.1.1"
+  
+  classnames@^2.2.6:
+    version "2.2.6"
+    resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   
   cli-boxes@^1.0.0:
     version "1.0.0"
@@ -694,6 +706,12 @@ Lockfile:
     dependencies:
       path-exists "^2.0.0"
       pinkie-promise "^2.0.0"
+  
+  follow-redirects@^1.3.0:
+    version "1.5.0"
+    resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.5.0.tgz#234f49cf770b7f35b40e790f636ceba0c3a0ab77"
+    dependencies:
+      debug "^3.1.0"
   
   for-in@^1.0.2:
     version "1.0.2"

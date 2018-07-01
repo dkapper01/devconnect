@@ -20,6 +20,11 @@ class Register extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentWillReceiveProps = (nextProps) => {
+    
+  }
+  
+
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
